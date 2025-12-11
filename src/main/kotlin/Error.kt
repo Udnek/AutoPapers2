@@ -9,4 +9,8 @@ class Error(val message: String) {
     fun join(next: String): Error{
         return Error("${message}: $next")
     }
+
+    operator fun plus(other: Error): Error{
+        return this.join(other)
+    }
 }

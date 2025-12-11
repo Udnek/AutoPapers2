@@ -2,8 +2,8 @@ package me.autopapers2
 
 class ValueOrError<out T>{
 
-    private val value: T?
-    private val error: Error?
+    val value: T?
+    val error: Error?
 
     private constructor(value: T?, error: Error?){
         this.value = value
@@ -11,12 +11,16 @@ class ValueOrError<out T>{
     }
 
     companion object{
-        fun <T> fail(error: Error): ValueOrError<T>{
+        fun <T> failure(error: Error): ValueOrError<T>{
             return ValueOrError(null, error)
         }
 
-        fun <T> fail(error: String): ValueOrError<T>{
-            return ValueOrError(null, Error(error))
+        fun <T> failure(throwable: Throwable): ValueOrError<T>{
+            return failure(throwable.message ?: "unknown error")
+        }
+
+        fun <T> failure(error: String): ValueOrError<T>{
+            return failure(Error(error))
         }
 
         fun <T> success(value: T): ValueOrError<T> {
